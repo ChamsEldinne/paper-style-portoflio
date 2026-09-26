@@ -285,9 +285,9 @@ const ExperienceRow = ({ experience }: { experience: Experience }) => {
         </span>
       </div>
 
-      <p className="mt-1 text-sm text-muted">
-        {experience.company}
-        {experience.location ? ` \u2022 ${experience.location}` : ""}
+      <p className="mt-1 text-xs text-muted flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 ">
+        <span className="font-bold">  {experience.company} </span> 
+        {experience.location ? `  ${experience.location}` : ""}
       </p>
 
       <button
@@ -489,7 +489,9 @@ export default function Portfolio({
             <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
               <span>{profile.location}</span>
               <span aria-hidden="true">|</span>
-              <span>{profile.phone}</span>
+              <a href={`https://wa.me/+213778084079`} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:opacity-70 transition-opacity">
+                {profile.phone}
+              </a>
               <span aria-hidden="true">|</span>
               <a href={`mailto:${profile.email}`} className="underline underline-offset-2 hover:opacity-70 transition-opacity">
                 {profile.email}

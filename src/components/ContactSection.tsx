@@ -12,12 +12,18 @@ const ContactSection = ({ contact }: { contact: ContactInfo }) => (
         </p>
 
         <p className="mt-4 text-sm">
-          EMAIL:{" "}
+          EMAIL :{" "}
           <a href={`mailto:${contact.email}`} className="underline underline-offset-2 hover:opacity-70 transition-opacity">
             {contact.email}
           </a>
         </p>
-        <p className="mt-1 text-sm">PHONE: {contact.phone}</p>
+        <p className="mt-1 text-sm">
+          PHONE :{" "}
+          <a href={`https://wa.me/+213778084079`} target="_blank" rel="noreferrer" className="mt-1 text-sm underline underline-offset-2 hover:opacity-70 transition-opacity">
+           {contact.phone}
+        </a>
+        </p>
+        
         <p className="mt-1 text-sm">BASE: {contact.base}</p>
 
         <div className="mt-4 flex items-center gap-5 text-xs font-semibold uppercase tracking-wide">

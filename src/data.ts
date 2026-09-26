@@ -108,11 +108,12 @@ export const defaultExperiences: Experience[] = [
   },
   {
     id: "exp-1",
-    role: "Frontend Developer (Part-Time)",
+    role: "Frontend Developer",
     company: "FennecBooking",
     location: "Algiers, Algeria (Hybrid)",
     startDate: "Dec 2025",
     endDate: "Mar 2026",
+    link : "https://play.google.com/store/apps/details?id=dz.fennecbookingApp.android.app",
     bullets: [
       "Converted complex Figma wireframes into responsive, high-performance web user interfaces using Next.js and Tailwind CSS.",
       "Integrated RESTful backend APIs for core agency workflows including user authentication, payment processing, ticket tracking, and administrative dashboards.",
