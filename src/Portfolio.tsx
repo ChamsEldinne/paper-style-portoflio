@@ -43,11 +43,11 @@ const GalleryButton = ({ onClick }: { onClick: () => void }) => (
 const PostCard = ({
   post,
   index,
-  href,
+  // href,
 }: {
   post: BlogPostPreview;
   index: number;
-  href: string;
+  // href: string;
 }) => (
   <article className="relative border-l-2 border-border pl-7 pb-10 last:pb-0">
     <span
@@ -81,12 +81,11 @@ const PostCard = ({
       </div>
     )}
 
-    <a
-      href={href}
+    <span
       className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide underline underline-offset-2 hover:opacity-70 transition-opacity"
     >
       &gt;&gt; Read Post <LinkArrowIcon />
-    </a>
+    </span>
   </article>
 );
 
@@ -97,7 +96,7 @@ const PostCard = ({
 
 function BlogIndex({
   posts = defaultPosts,
-  getHref = (slug) => `/blog/${slug}`,
+  // getHref = (slug) => `/blog/${slug}`,
 }: BlogIndexProps): React.ReactElement {
   return (
       <main
@@ -110,7 +109,9 @@ function BlogIndex({
         {/* Post list */}
         <div className="mt-10 flex flex-col">
           {posts.map((post, idx) => (
-            <PostCard key={post.slug} post={post} index={idx} href={getHref(post.slug)} />
+            <PostCard key={post.slug} post={post} index={idx} 
+            // href={getHref(post.slug)} 
+            />
           ))}
         </div>
       </main>
@@ -234,7 +235,7 @@ const ProjectGalleryModal = ({
 const SkillsSection = ({ groups }: { groups: SkillGroup[] }) => (
   <section className="mt-10">
     <SectionHeading>02. Skills</SectionHeading>
-    <div className="mt-4 rounded-[3px] border border-border p-5 sm:p-6 flex flex-col gap-5">
+    <div className="mt-4 md:rounded-[3px] md:border md:border-border py-5 md:p-5 sm:p-6 flex flex-col gap-5">
       {groups.map((group) => (
         <div key={group.category}>
           <p className="text-xs font-bold uppercase tracking-wide text-muted">
@@ -364,7 +365,7 @@ const ProjectsSection = ({ projects }: { projects: Project[] }) => {
 
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h3 className="text-base font-bold uppercase tracking-wide">
-                FILE_{idx + 1}: {project.title}
+                {project.title}
               </h3>
               {project.period && (
                 <span className="text-xs text-muted">{project.period}</span>

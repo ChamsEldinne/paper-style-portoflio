@@ -8,7 +8,7 @@ export const defaultProfile: ProfileData = {
   name: "Chamseldin Boukhalkhal",
   title: "Software Engineer | Full-Stack Web Developer",
   location: "Medea, Algeria",
-  phone: "+213 553 11 22 60",
+  phone: "+213 7 78 08 40 79",
   email: "boukhalkhalchamseldin@gmail.com",
   linkedin: LINKEDIN_URL ,
   github: GITHUB_URL ,
@@ -73,6 +73,40 @@ export const defaultSkillGroups: SkillGroup[] = [
 
 export const defaultExperiences: Experience[] = [
   {
+    id: "exp-3",
+    role: "Co-Founder & Lead Full-Stack Engineer",
+    company: "Massar",
+    location: "Medea, Algeria (Remote)",
+    startDate: "Apr 2026",
+    endDate: "Current",
+    link: "https://massardz.org",
+    bullets: [
+      "Architected and optimized a scalable Node.js backend API serving three clients: a mobile application, an Admin Dashboard, and a Superadmin Dashboard.",
+      "Designed a relational PostgreSQL database schema and implemented Redis caching to improve query performance and reduce API latency.",
+      "Led frontend engineering for the Admin and Superadmin dashboards using Next.js and React Query for efficient data fetching, caching, and state management.",
+      "Integrated mobile push notifications and real-time event delivery across the application ecosystem.",
+      "Configured automated CI/CD pipelines with GitHub Actions for continuous deployment across staging and production environments.",
+      "Established centralized infrastructure monitoring, alerting, and log aggregation using Grafana, Prometheus, Loki, and Uptime Kuma to monitor system health and service availability.",
+      "Conducted load and stress testing with k6 to evaluate traffic capacity, identify performance bottlenecks, and determine optimal VPS hardware configurations.",
+    ],
+    tech: [
+      "Node.js",
+      "JavaScript",
+      "PostgreSQL",
+      "Redis",
+      "Next.js",
+      "React Query",
+      "Push Notifications",
+      "GitHub Actions",
+      "CI/CD",
+      "Grafana",
+      "Prometheus",
+      "Loki",
+      "Uptime Kuma",
+      "k6",
+    ],
+  },
+  {
     id: "exp-1",
     role: "Frontend Developer (Part-Time)",
     company: "FennecBooking",
@@ -92,7 +126,7 @@ export const defaultExperiences: Experience[] = [
     company: "Examee — Online Assessment Platform",
     startDate: "Jan 2025",
     endDate: "Dec 2025",
-    link: "https://examee.online",
+    link: "https://exameee.online",
     bullets: [
       "Architected and deployed a full-stack assessment SaaS platform using Next.js, Laravel, and Docker, replacing traditional paper exams for institutions.",
       "Engineered anti-cheating monitoring mechanisms, integrating Safe Exam Browser, full-screen locking, and automated activity tracking.",
@@ -216,7 +250,7 @@ export const defaultLanguages: Language[] = [
 
 export const defaultContact: ContactInfo = {
   email: "boukhalkhalchamseldin@gmail.com",
-  phone: "+213 553 11 22 60",
+  phone: "+213 7 78 08 40 79",
   base: "Medea, Algeria",
   github: GITHUB_URL,
   linkedin:LINKEDIN_URL,
