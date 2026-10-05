@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 import Portfolio from './Portfolio';
 
@@ -28,6 +29,7 @@ export default function App() {
           {/* <Route path="/blog/:slug" element={<BlogPost /> } /> */}
         </Routes>
       {/* </Suspense> */}
+      <Analytics />
     </div>
     </BrowserRouter>
   );
