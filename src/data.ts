@@ -151,7 +151,7 @@ export const defaultProjects: Project[] = [
     tech: ["Next.js", "React Query", "FastAPI", "LangChain", "LangGraph", "Python"],
     assets: [
       { id: "asset-1", type: "image", src: "dbforge/1.png" },
-      { id: "asset-2", type: "image", src: "dbforge/2.mp4" },
+      { id: "asset-2", type: "video", src: "dbforge/2.mp4" },
     ],
   },
   {
@@ -239,6 +239,13 @@ export const defaultEducation: Education[] = [
     school: "Yahia Fares University",
     degree: "Bachelor's Degree in Computer Science",
     period: "2022 – 2025",
+    location: "Medea, Algeria",
+  },
+  {
+    id: "edu-2",
+    school: "Yahia Fares University",
+    degree: "Master Degree in Applied Artificial Intelligence",
+    period: "2025 - 2027 (Current)",
     location: "Medea, Algeria",
   },
 ];

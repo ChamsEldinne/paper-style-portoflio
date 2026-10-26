@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import type {  SkillGroup, Experience, Project, Education, Language  ,GalleryState , PortfolioProps , BlogPostPreview, BlogIndexProps   } from "./types";
-import { defaultProfile, defaultSkillGroups, defaultExperiences, defaultProjects, defaultEducation, defaultLanguages , defaultPosts} from "./data";
+import type { SkillGroup, Experience, Project, Education, Language, GalleryState, PortfolioProps, BlogPostPreview, BlogIndexProps, Asset } from "./types";
+import { defaultProfile, defaultSkillGroups, defaultExperiences, defaultProjects, defaultEducation, defaultLanguages, defaultPosts } from "./data";
 import Layout from "./components/Layout";
-import { MailIcon, GithubIcon, LinkedinIcon, LinkArrowIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "./icons";
+import { MailIcon, GithubIcon, LinkedinIcon, LinkArrowIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon, PlayIcon, ExpandIcon } from "./icons";
 
 
 
@@ -124,12 +124,15 @@ const ProjectGalleryModal = ({
   gallery,
   onClose,
   onNavigate,
+  onSelectIndex,
 }: {
   gallery: GalleryState;
   onClose: () => void;
   onNavigate: (direction: 1 | -1) => void;
+  onSelectIndex?: (index: number) => void;
 }) => {
-  const { title, images, index } = gallery;
+  const { title, items, index } = gallery;
+  const currentItem = items[index];
 
   React.useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -141,12 +144,16 @@ const ProjectGalleryModal = ({
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose, onNavigate]);
 
+  if (!currentItem) return null;
+
+  const isVideo = currentItem.type === "video" || currentItem.src.endsWith(".mp4") || currentItem.src.endsWith(".webm");
+
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={`${title} pictures`}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 sm:p-8"
+      aria-label={`${title} media preview`}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-3 sm:p-6 backdrop-blur-[2px]"
       onClick={onClose}
       style={{
         fontFamily:
@@ -155,46 +162,63 @@ const ProjectGalleryModal = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-180 rounded-[3px] border border-border bg-bg p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+        className="relative w-full max-w-220 rounded-[3px] border-2 border-border bg-bg p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.55)] flex flex-col max-h-[92vh]"
       >
         {/* Header row */}
-        <div className="flex items-center justify-between gap-4">
-          <h3 className="text-xs font-bold uppercase tracking-wide text-text truncate">
-            {title}
-          </h3>
+        <div className="flex items-center justify-between gap-4 border-b border-border-soft pb-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="shrink-0 text-2xs uppercase tracking-wider px-1.5 py-0.5 rounded-xs border border-border bg-surface font-bold">
+              {isVideo ? "VIDEO" : "STILL"}
+            </span>
+            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wide text-text truncate">
+              {title}
+            </h3>
+          </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="shrink-0 rounded-xs border border-border-soft bg-accent p-1.5 text-text hover:opacity-70 transition-opacity"
+            className="shrink-0 rounded-xs border border-border bg-accent p-1.5 text-text hover:opacity-70 transition-opacity cursor-pointer"
           >
             <CloseIcon />
           </button>
         </div>
 
-        {/* Image frame */}
-        <div className="relative mt-4 overflow-hidden rounded-xs border-[3px] border-border bg-surface">
-          <img
-            src={images[index]}
-            alt={`${title} screenshot ${index + 1} of ${images.length}`}
-            className="aspect-video w-full object-cover"
-          />
+        {/* Media stage */}
+        <div className="relative mt-3.5 flex-1 min-h-0 flex items-center justify-center overflow-hidden rounded-xs border-[2px] border-border bg-surface">
+          {isVideo ? (
+            <video
+              key={currentItem.src}
+              src={currentItem.src}
+              controls
+              autoPlay
+              playsInline
+              className="max-h-[62vh] w-full object-contain bg-black/20"
+            />
+          ) : (
+            <img
+              key={currentItem.src}
+              src={currentItem.src}
+              alt={`${title} attachment ${index + 1} of ${items.length}`}
+              className="max-h-[62vh] w-full object-contain bg-black/5"
+            />
+          )}
 
-          {images.length > 1 && (
+          {items.length > 1 && (
             <>
               <button
                 type="button"
                 onClick={() => onNavigate(-1)}
-                aria-label="Previous picture"
-                className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full border border-border-soft bg-bg/90 p-1.5 text-text hover:opacity-70 transition-opacity"
+                aria-label="Previous item"
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 rounded-full border border-border bg-bg/90 p-2 text-text shadow-sm hover:opacity-70 transition-opacity cursor-pointer"
               >
                 <ChevronLeftIcon />
               </button>
               <button
                 type="button"
                 onClick={() => onNavigate(1)}
-                aria-label="Next picture"
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full border border-border-soft bg-bg/90 p-1.5 text-text hover:opacity-70 transition-opacity"
+                aria-label="Next item"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full border border-border bg-bg/90 p-2 text-text shadow-sm hover:opacity-70 transition-opacity cursor-pointer"
               >
                 <ChevronRightIcon />
               </button>
@@ -202,27 +226,53 @@ const ProjectGalleryModal = ({
           )}
         </div>
 
-        {/* Footer: dashed rule + counter + dots */}
-        {images.length > 1 && (
-          <div className="mt-4">
-            <div className="border-t-2 border-dashed border-border-soft" />
-            <div className="mt-3 flex items-center justify-between">
-              <span className="text-2xs uppercase tracking-[0.15em] text-muted">
-                {index + 1} / {images.length}
-              </span>
-              <div className="flex items-center gap-1.5">
-                {images.map((_, i) => (
-                  <span
-                    key={i}
-                    className={`h-1.5 w-1.5 rounded-full border border-border ${
-                      i === index ? "bg-text" : "bg-transparent"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+        {/* Footer info & thumbnails strip */}
+        <div className="mt-3.5 flex flex-col gap-2.5">
+          <div className="flex items-center justify-between text-2xs uppercase tracking-[0.15em] text-muted">
+            <span className="font-semibold">
+              FILE [{String(index + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}]
+            </span>
+            <span className="truncate max-w-[50%] text-right font-medium">
+              {currentItem.src.split("/").pop()}
+            </span>
           </div>
-        )}
+
+          {items.length > 1 && (
+            <div className="flex items-center gap-2 overflow-x-auto py-1 border-t border-dashed border-border-soft">
+              {items.map((item, i) => {
+                const itemIsVideo = item.type === "video" || item.src.endsWith(".mp4") || item.src.endsWith(".webm");
+                const isSelected = i === index;
+                return (
+                  <button
+                    key={item.id || item.src}
+                    type="button"
+                    onClick={() => onSelectIndex ? onSelectIndex(i) : undefined}
+                    className={`relative shrink-0 w-14 h-10 rounded-xs border overflow-hidden cursor-pointer transition-all ${
+                      isSelected
+                        ? "border-text ring-2 ring-text/30"
+                        : "border-border-soft opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    {itemIsVideo ? (
+                      <div className="w-full h-full bg-accent-soft flex items-center justify-center text-text">
+                        <PlayIcon className="h-3 w-3" />
+                      </div>
+                    ) : (
+                      <img
+                        src={item.src}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                    <span className="absolute bottom-0 right-0 bg-border text-bg text-[8px] px-1 font-bold leading-tight">
+                      {i + 1}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -335,68 +385,162 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => (
 const ProjectsSection = ({ projects }: { projects: Project[] }) => {
   const [gallery, setGallery] = useState<GalleryState | null>(null);
 
-  const openGallery = (title: string, images: string[]) => setGallery({ title, images, index: 0 });
+  const openGallery = (title: string, items: Asset[], startIndex = 0) =>
+    setGallery({ title, items, index: startIndex });
+
   const closeGallery = () => setGallery(null);
-  
+
   const navigateGallery = (direction: 1 | -1) =>
     setGallery((current) =>
       current
-        ? { ...current, index: (current.index + direction + current.images.length) % current.images.length }
+        ? {
+            ...current,
+            index:
+              (current.index + direction + current.items.length) %
+              current.items.length,
+          }
         : current
     );
+
+  const selectGalleryIndex = (index: number) =>
+    setGallery((current) => (current ? { ...current, index } : current));
 
   return (
     <section className="mt-12">
       <SectionHeading>04. Projects</SectionHeading>
 
       <div className="mt-6 flex flex-col">
-        
-        {projects.map((project, idx) => (
-          <div
-            key={project.id}
-            className={`relative border-l-2 border-border-soft pl-7 mb-8 hover:border-text group  ${
-              idx === projects.length - 1 ? "pb-0" : "pb-0"
-            }`}
-          >
-            <span
-              className="absolute -left-1.75 top-0 h-3 w-3 rounded-full border border-border bg-accent-soft group-hover:bg-border group-hover:border-accent-soft "
-              aria-hidden="true"
-            />
+        {projects.map((project, idx) => {
+          const projectTitle = `PROJECT_${String(idx + 1).padStart(2, "0")}: ${project.title}`;
+          const assets = project.assets || [];
 
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <h3 className="text-base font-bold uppercase tracking-wide">
-                {project.title}
-              </h3>
-              {project.period && (
-                <span className="text-xs text-muted">{project.period}</span>
+          return (
+            <div
+              key={project.id}
+              className={`relative border-l-2 border-border-soft pl-7 mb-8 hover:border-text group ${
+                idx === projects.length - 1 ? "pb-0" : "pb-0"
+              }`}
+            >
+              <span
+                className="absolute -left-1.75 top-0 h-3 w-3 rounded-full border border-border bg-accent-soft group-hover:bg-border group-hover:border-accent-soft"
+                aria-hidden="true"
+              />
+
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <h3 className="text-base font-bold uppercase tracking-wide">
+                  {project.title}
+                </h3>
+                {project.period && (
+                  <span className="text-xs text-muted">{project.period}</span>
+                )}
+              </div>
+
+              <ul className="mt-3 space-y-2">
+                {project.bullets.map((bullet, i) => (
+                  <li key={i} className="text-base leading-[1.7]">
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+
+              <TechLine tech={project.tech} />
+
+              {/* Attached Media / Photos Strip under project */}
+              {assets.length > 0 && (
+                <div className="mt-4 pt-3 border-t border-dashed border-border-soft/70">
+                  <div className="flex items-center justify-between text-2xs uppercase tracking-wider text-muted font-semibold mb-2.5">
+                    <span className="flex items-center gap-1.5">
+                      <CameraIcon />
+                      ATTACHED_MEDIA [{assets.length}]
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => openGallery(projectTitle, assets, 0)}
+                      className="cursor-pointer underline underline-offset-2 hover:opacity-75 transition-opacity"
+                    >
+                      [ Expand All ]
+                    </button>
+                  </div>
+
+                  <div className="flex gap-3 overflow-x-auto pb-1.5 pt-0.5 no-scrollbar scroll-smooth">
+                    {assets.map((asset, assetIdx) => {
+                      const isVideo =
+                        asset.type === "video" ||
+                        asset.src.endsWith(".mp4") ||
+                        asset.src.endsWith(".webm");
+
+                      return (
+                        <button
+                          key={asset.id || asset.src}
+                          type="button"
+                          onClick={() => openGallery(projectTitle, assets, assetIdx)}
+                          className="group/item relative flex flex-col shrink-0 w-44 sm:w-52 md:w-60 overflow-hidden rounded-xs border border-border bg-surface text-left transition-all hover:-translate-y-0.5 hover:shadow-md hover:border-text cursor-pointer"
+                          title="Click to view in modal"
+                        >
+                          <div className="relative aspect-video w-full overflow-hidden bg-bg/60">
+                            {isVideo ? (
+                              <div className="relative w-full h-full flex items-center justify-center bg-accent-soft/40">
+                                <video
+                                  src={asset.src}
+                                  muted
+                                  preload="metadata"
+                                  className="w-full h-full object-cover opacity-85 group-hover/item:opacity-100 transition-opacity"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/25 group-hover/item:bg-black/15 transition-colors">
+                                  <div className="rounded-full border border-border bg-bg/90 p-2 shadow-sm text-text">
+                                    <PlayIcon className="h-3.5 w-3.5" />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <img
+                                src={asset.src}
+                                alt={`${project.title} preview ${assetIdx + 1}`}
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover/item:scale-105"
+                                loading="lazy"
+                              />
+                            )}
+
+                            {/* Corner tag */}
+                            <span className="absolute top-1 left-1 rounded-xs border border-border/80 bg-bg/90 px-1 py-0.2 text-[9px] font-mono font-bold uppercase tracking-wider text-text">
+                              {isVideo ? "VID" : "IMG"} #{assetIdx + 1}
+                            </span>
+
+                            <span className="absolute bottom-1 right-1 opacity-0 group-hover/item:opacity-100 transition-opacity rounded-xs border border-border bg-bg/95 p-1 text-text shadow-xs">
+                              <ExpandIcon className="h-2.5 w-2.5" />
+                            </span>
+                          </div>
+
+                          <div className="px-2 py-1 text-[10px] font-mono text-muted uppercase tracking-wider truncate border-t border-border-soft/60 bg-bg/40">
+                            {asset.src.split("/").pop()}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
+
+              <div className="flex flex-wrap items-center gap-x-6 mt-3">
+                {project.link && <ExternalLink href={project.link} />}
+                {assets.length > 0 && (
+                  <GalleryButton
+                    onClick={() => openGallery(projectTitle, assets, 0)}
+                  />
+                )}
+              </div>
             </div>
-
-            <ul className="mt-3 space-y-2">
-              {project.bullets.map((bullet, i) => (
-                <li key={i} className="text-base leading-[1.7]">
-                  {bullet}
-                </li>
-              ))}
-            </ul>
-
-            <TechLine tech={project.tech} />
-
-            <div className="flex flex-wrap items-center gap-x-6">
-              {project.link && <ExternalLink href={project.link} />}
-              {project.assets && project.assets.length > 0 && (
-                <GalleryButton
-                  onClick={() => openGallery(`FILE_${idx + 1}: ${project.title}`, project.assets!.map((asset) => asset.src))}
-                />
-              )}
-            </div>
-          </div>
-        ))}
-
+          );
+        })}
       </div>
 
       {gallery && (
-        <ProjectGalleryModal gallery={gallery} onClose={closeGallery} onNavigate={navigateGallery} />
+        <ProjectGalleryModal
+          gallery={gallery}
+          onClose={closeGallery}
+          onNavigate={navigateGallery}
+          onSelectIndex={selectGalleryIndex}
+        />
       )}
     </section>
   );
@@ -433,7 +577,7 @@ const EducationSection = ({ education }: { education: Education[] }) => (
 
 const LanguagesSection = ({ languages }: { languages: Language[] }) => (
   <section className="mt-12">
-    <SectionHeading>07. Languages</SectionHeading>
+    <SectionHeading>06. Languages</SectionHeading>
 
     <div className="mt-4 flex flex-wrap gap-3">
       {languages.map((lang) => (
@@ -549,7 +693,7 @@ export default function Portfolio({
 
         <EducationSection education={education} />        
 
-        <BlogIndex/>
+        {/* <BlogIndex/> */}
 
         <LanguagesSection languages={languages} />
 

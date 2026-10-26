@@ -38,14 +38,14 @@ export interface Project {
   assets?: Assets[];
 }
 
-interface Assets{
+export interface Asset {
   id: string;
-  type : "video" | "image";
+  type: "video" | "image";
   src: string;
+  title?: string;
 }
 
-
-
+export type Assets = Asset;
 
 export interface Education {
   id: string;
@@ -63,7 +63,7 @@ export interface Language {
 
 export interface GalleryState {
   title: string;
-  images: string[];
+  items: Asset[];
   index: number;
 }
 
