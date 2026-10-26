@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import type { SkillGroup, Experience, Project, Education, Language, GalleryState, PortfolioProps, BlogPostPreview, BlogIndexProps, Asset } from "./types";
-import { defaultProfile, defaultSkillGroups, defaultExperiences, defaultProjects, defaultEducation, defaultLanguages, defaultPosts } from "./data";
+import type { SkillGroup, Experience, Project, Education, Language, GalleryState, PortfolioProps, Asset } from "./types";
+import { defaultProfile, defaultSkillGroups, defaultExperiences, defaultProjects, defaultEducation, defaultLanguages } from "./data";
 import Layout from "./components/Layout";
 import { MailIcon, GithubIcon, LinkedinIcon, LinkArrowIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon, PlayIcon, ExpandIcon } from "./icons";
 
@@ -40,83 +40,83 @@ const GalleryButton = ({ onClick }: { onClick: () => void }) => (
 );
 
 
-const PostCard = ({
-  post,
-  index,
-  // href,
-}: {
-  post: BlogPostPreview;
-  index: number;
-  // href: string;
-}) => (
-  <article className="relative border-l-2 border-border pl-7 pb-10 last:pb-0">
-    <span
-      className="absolute -left-1.75 top-1 h-3 w-3 rounded-full border border-border bg-accent-soft"
-      aria-hidden="true"
-    />
+// const PostCard = ({
+//   post,
+//   index,
+//   // href,
+// }: {
+//   post: BlogPostPreview;
+//   index: number;
+//   // href: string;
+// }) => (
+//   <article className="relative border-l-2 border-border pl-7 pb-10 last:pb-0">
+//     <span
+//       className="absolute -left-1.75 top-1 h-3 w-3 rounded-full border border-border bg-accent-soft"
+//       aria-hidden="true"
+//     />
 
-    <h2 className="text-base font-bold uppercase tracking-wide">
-      LOG_{String(index + 1).padStart(2, "0")}: {post.title}
-    </h2>
-    <p className="mt-1.5 text-sm text-color-muted">{post.subtitle}</p>
+//     <h2 className="text-base font-bold uppercase tracking-wide">
+//       LOG_{String(index + 1).padStart(2, "0")}: {post.title}
+//     </h2>
+//     <p className="mt-1.5 text-sm text-color-muted">{post.subtitle}</p>
 
-    <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-color-muted">
-      <span>{post.date}</span>
-      <span aria-hidden="true">|</span>
-      <span>{post.readingTime}</span>
-    </div>
+//     <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-color-muted">
+//       <span>{post.date}</span>
+//       <span aria-hidden="true">|</span>
+//       <span>{post.readingTime}</span>
+//     </div>
 
-    <p className="mt-3 max-w-170 text-base leading-[1.75]">{post.excerpt}</p>
+//     <p className="mt-3 max-w-170 text-base leading-[1.75]">{post.excerpt}</p>
 
-    {post.tags.length > 0 && (
-      <div className="mt-3 flex flex-wrap gap-2">
-        {post.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-xs border border-border bg-surface px-2.5 py-1 text-2xs font-medium uppercase tracking-wide"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    )}
+//     {post.tags.length > 0 && (
+//       <div className="mt-3 flex flex-wrap gap-2">
+//         {post.tags.map((tag) => (
+//           <span
+//             key={tag}
+//             className="rounded-xs border border-border bg-surface px-2.5 py-1 text-2xs font-medium uppercase tracking-wide"
+//           >
+//             {tag}
+//           </span>
+//         ))}
+//       </div>
+//     )}
 
-    <span
-      className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide underline underline-offset-2 hover:opacity-70 transition-opacity"
-    >
-      &gt;&gt; Read Post <LinkArrowIcon />
-    </span>
-  </article>
-);
+//     <span
+//       className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide underline underline-offset-2 hover:opacity-70 transition-opacity"
+//     >
+//       &gt;&gt; Read Post <LinkArrowIcon />
+//     </span>
+//   </article>
+// );
 
 /* ----------------------------------------------------------------------- */
 /*  Root component                                                          */
 /* ----------------------------------------------------------------------- */
 
 
-function BlogIndex({
-  posts = defaultPosts,
-  // getHref = (slug) => `/blog/${slug}`,
-}: BlogIndexProps): React.ReactElement {
-  return (
-      <main
-        className="mt-12"
-      >
+// function BlogIndex({
+//   posts = defaultPosts,
+//   // getHref = (slug) => `/blog/${slug}`,
+// }: BlogIndexProps): React.ReactElement {
+//   return (
+//       <main
+//         className="mt-12"
+//       >
 
-        {/* Header */}
-       <SectionHeading>06. Blog Posts </SectionHeading>
+//         {/* Header */}
+//        <SectionHeading>06. Blog Posts </SectionHeading>
 
-        {/* Post list */}
-        <div className="mt-10 flex flex-col">
-          {posts.map((post, idx) => (
-            <PostCard key={post.slug} post={post} index={idx} 
-            // href={getHref(post.slug)} 
-            />
-          ))}
-        </div>
-      </main>
-  );
-}
+//         {/* Post list */}
+//         <div className="mt-10 flex flex-col">
+//           {posts.map((post, idx) => (
+//             <PostCard key={post.slug} post={post} index={idx} 
+//             // href={getHref(post.slug)} 
+//             />
+//           ))}
+//         </div>
+//       </main>
+//   );
+// }
 
 
 
